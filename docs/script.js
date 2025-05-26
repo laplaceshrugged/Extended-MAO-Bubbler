@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
      const csvFileInput = document.getElementById('csvFileInput');
+    const pdfFileInput = document.getElementById('pdfFileInput'); // Get PDF file input
     const tableContainer = document.getElementById('tableContainer');
     const selectAllButton = document.getElementById('selectAllBtn');
     const deselectAllButton = document.getElementById('deselectAllBtn');
@@ -53,6 +54,91 @@ document.addEventListener('DOMContentLoaded', () => {
     let rowCheckboxes = [];
 
     csvFileInput.addEventListener('change', handleFileSelect);
+    if (pdfFileInput) { pdfFileInput.addEventListener('change', handlePdfFileSelect); } // Add event listener for PDF input
+
+    async function handlePdfFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) {
+            tableContainer.innerHTML = '<p>No PDF file selected.</p>';
+            return;
+        }
+
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
+        tableContainer.innerHTML = '<p>Processing PDF... please wait.</p>';
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const typedarray = new Uint8Array(e.target.result);
+            try {
+                const pdf = await pdfjsLib.getDocument({data: typedarray}).promise;
+                let allTextContent = '';
+
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join('\n'); // Join text items with newline
+                    allTextContent += pageText + '\n\n'; // Add extra newline between pages
+                }
+                
+                // Basic heuristic to convert allTextContent to CSV-like structure
+                const { headers, rows } = parseTextToCsv(allTextContent);
+
+                if (headers.length > 0 && rows.length > 0) {
+                    generateTable(headers, rows);
+                    setupSelectionListeners(); // Assuming this is still needed
+                } else {
+                    tableContainer.innerHTML = '<p>Could not extract tabular data from PDF, or PDF contained no text.</p>';
+                }
+            } catch (error) {
+                console.error('Error processing PDF:', error);
+                tableContainer.innerHTML = '<p>Error processing PDF. It might be corrupted or protected. Check console for details.</p>';
+            }
+        };
+        reader.onerror = () => { // Corrected arrow function syntax
+            tableContainer.innerHTML = '<p>Error reading PDF file.</p>';
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    function parseTextToCsv(textContent) {
+        const lines = textContent.trim().split(/\r?\n/);
+        let headers = [];
+        const rows = [];
+        let potentialHeadersFound = false;
+
+        // Regex to find multiple spaces (e.g., 3 or more) as a delimiter
+        const delimiterRegex = / {3,}/; 
+
+        for (const line of lines) {
+            if (line.trim() === '') continue; // Skip empty lines
+
+            const potentialCells = line.split(delimiterRegex).map(cell => cell.trim());
+
+            if (potentialCells.length <= 1) continue; // If only one "cell", it's probably not a table row
+
+            if (!potentialHeadersFound) {
+                // Assume the first line with multiple "cells" is the header
+                headers = potentialCells;
+                potentialHeadersFound = true;
+            } else if (headers.length > 0) {
+                // For data rows, ensure they have a similar number of columns as headers.
+                // This is a very basic alignment; more sophisticated logic might be needed.
+                // For simplicity, we'll just add the row.
+                rows.push(potentialCells);
+            }
+        }
+        
+        // If headers were found, but no data rows, or if headers are very sparse,
+        // it might not be a table.
+        if (headers.length > 0 && rows.length === 0 && headers.length < 2) { 
+             // Optional: if only one header column and no rows, maybe not a table.
+             // headers = []; // Uncomment to discard if this case is not useful.
+        }
+
+        return { headers, rows };
+    }
 
     function handleFileSelect(event) {
         const file = event.target.files[0];

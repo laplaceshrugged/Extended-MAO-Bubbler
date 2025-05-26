@@ -23,7 +23,13 @@
 
             <h1>CSV Data Table</h1>
 
+            <label for="csvFileInput">Upload CSV File:</label>
             <input type="file" id="csvFileInput" accept=".csv">
+
+            <br> 
+
+            <label for="pdfFileInput">Upload PDF File (to convert to CSV):</label>
+            <input type="file" id="pdfFileInput" accept=".pdf">
 
             <div class="action-buttons" style="margin-top: 15px; margin-bottom: 15px;">
                 <button id="selectAllBtn">Select All</button>
@@ -50,6 +56,7 @@
         </section>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
