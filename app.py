@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS # For handling Cross-Origin Resource Sharing
 import os # For saving files, if needed
+import pandas as pd
+
 
 # Initialize the Flask application
 app = Flask(__name__)
