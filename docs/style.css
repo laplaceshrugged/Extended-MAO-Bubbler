@@ -50,3 +50,57 @@ section h2 {
 html {
     scroll-behavior: smooth;
 }
+
+input[type="file"] {
+    margin-bottom: 15px;
+}
+
+.action-buttons button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.action-buttons button:hover {
+    background-color: #0056b3;
+}
+
+#tableContainer {
+    margin-top: 20px;
+    overflow-x: auto; /* For very wide tables */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px; /* Increased padding slightly */
+    text-align: left;
+    white-space: nowrap; /* Prevent text wrapping initially */
+}
+
+th {
+    background-color: #f2f2f2;
+    position: sticky; /* Optional: sticky header */
+    top: 0;          /* Optional: sticky header */
+    z-index: 1;      /* Optional: sticky header */
+}
+
+/* Style for selected rows */
+tr.selected {
+    background-color: #d1eaff !important; /* Ensure it overrides other potential row styles */
+    font-weight: bold;
+}
+
+/* Optional: Style for the header checkbox column */
+th:first-child, td:first-child {
+    width: 40px; /* Adjust as needed for the checkbox */
+    text-align: center;
+}
