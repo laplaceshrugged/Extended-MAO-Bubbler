@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let headerCheckbox = null;
     let rowCheckboxes = [];
 
-    pdfFileInput.addEventListener('change', handleFileSelect);
     if (pdfFileInput) { pdfFileInput.addEventListener('change', handlePdfFileSelect); } // Add event listener for PDF input
 
     async function handlePdfFileSelect(event) {
