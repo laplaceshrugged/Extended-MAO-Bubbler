@@ -289,4 +289,82 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    const exportSelectedCsvBtn = document.getElementById('exportSelectedCsvBtn');
+
+    if (exportSelectedCsvBtn) {
+        exportSelectedCsvBtn.addEventListener('click', () => {
+            if (!currentTable) {
+                messageDiv.textContent = 'No table data available to export.';
+                messageDiv.style.color = 'red';
+                return;
+            }
+
+            const headers = [];
+            const headerCells = currentTable.querySelectorAll('thead th');
+            // Skip the first header cell (checkbox column)
+            for (let i = 1; i < headerCells.length; i++) {
+                headers.push(headerCells[i].textContent.trim());
+            }
+
+            const selectedRowsData = [];
+            rowCheckboxes.forEach(checkbox => { // rowCheckboxes is from your existing script
+                if (checkbox.checked) {
+                    const row = checkbox.closest('tr');
+                    const cells = row.querySelectorAll('td');
+                    const rowData = [];
+                    // Skip the first cell (checkbox cell)
+                    for (let i = 1; i < cells.length; i++) {
+                        // Get current textContent, which includes edits as cells are contentEditable
+                        rowData.push(cells[i].textContent.trim());
+                    }
+                    selectedRowsData.push(rowData);
+                }
+            });
+
+            if (selectedRowsData.length === 0) {
+                messageDiv.textContent = 'No rows selected to export.';
+                messageDiv.style.color = 'orange';
+                return;
+            }
+
+            // Function to escape CSV data (handles commas, quotes, newlines within cells)
+            const escapeCsvCell = (cellData) => {
+                if (cellData == null) { // Check for null or undefined
+                    return '';
+                }
+                const stringData = String(cellData);
+                // If the data contains a comma, quote, or newline, wrap it in double quotes
+                // and escape any existing double quotes by doubling them
+                if (stringData.includes(',') || stringData.includes('"') || stringData.includes('\n') || stringData.includes('\r')) {
+                    return `"${stringData.replace(/"/g, '""')}"`;
+                }
+                return stringData;
+            };
+            
+            let csvContent = headers.map(escapeCsvCell).join(',') + '\r\n'; // Header row
+            selectedRowsData.forEach(rowData => {
+                csvContent += rowData.map(escapeCsvCell).join(',') + '\r\n';
+            });
+
+            // Create a blob and trigger download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) { // Feature detection
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'selected_data.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                messageDiv.textContent = 'Selected data exported successfully!';
+                messageDiv.style.color = 'green';
+            } else {
+                messageDiv.textContent = 'CSV export not supported by your browser.';
+                messageDiv.style.color = 'red';
+            }
+        });
+    }
 });

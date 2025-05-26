@@ -175,7 +175,6 @@ def create_sheet_handler():
             'message': 'PDF processed. Extracted text and table data. Processed CSV file saved on server.',
             'filename': filename, # Original PDF filename
             'option': selected_option,
-            'top_line_text': top_line_text,
             'school_name': schoolName, # Key name from your latest code
             'csv_data': processed_csv_output_string # CSV string from the processed DataFrame
         }), 200
