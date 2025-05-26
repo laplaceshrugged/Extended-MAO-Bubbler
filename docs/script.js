@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.classList.add('active');
         });
     });
-     const csvFileInput = document.getElementById('csvFileInput');
     const pdfFileInput = document.getElementById('pdfFileInput'); // Get PDF file input
     const tableContainer = document.getElementById('tableContainer');
     const selectAllButton = document.getElementById('selectAllBtn');
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let headerCheckbox = null;
     let rowCheckboxes = [];
 
-    csvFileInput.addEventListener('change', handleFileSelect);
+    pdfFileInput.addEventListener('change', handleFileSelect);
     if (pdfFileInput) { pdfFileInput.addEventListener('change', handlePdfFileSelect); } // Add event listener for PDF input
 
     async function handlePdfFileSelect(event) {
