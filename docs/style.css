@@ -104,3 +104,18 @@ th:first-child, td:first-child {
     width: 40px; /* Adjust as needed for the checkbox */
     text-align: center;
 }
+
+.button-group button.active-option {
+    background-color: #0056b3; /* A darker blue to indicate selection */
+    color: white;
+    font-weight: bold;
+    border: 2px solid #004080; /* Optional: a slightly darker border */
+}
+
+/* Optional: Style for messages */
+#message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
