@@ -43,10 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
             this.classList.add('active');
         });
     });
-     const csvFileInput = document.getElementById('csvFileInput');
+
     const tableContainer = document.getElementById('tableContainer');
     const selectAllButton = document.getElementById('selectAllBtn');
     const deselectAllButton = document.getElementById('deselectAllBtn');
+
+    const pdfFileInput = document.getElementById('pdfFile');
+    const optionButtons = document.querySelectorAll('.button-group button');
+    const submitBtn = document.getElementById('submitBtn');
+    const messageDiv = document.getElementById('message');
+    const uploadForm = document.getElementById('uploadForm');
+
+    const backendUrl = '/api/upload'; // Example: 'http://localhost:3000/upload'
+
 
     let currentTable = null; // To store reference to the generated table
     let headerCheckbox = null;
