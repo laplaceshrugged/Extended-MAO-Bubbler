@@ -72,7 +72,7 @@ def create_sheet_handler():
                     "horizontal_strategy": "lines_strict",
                     "snap_tolerance": 5,
                     "join_tolerance": 5,
-                    "keep_blank_chars": True,
+                    "text_keep_blank_chars": True
                 })
                 
                 if tables_on_page:

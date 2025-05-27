@@ -23,36 +23,27 @@
 
             <h1>CSV Data Table</h1>
 
-        <div class="container">
-            <h2>Upload PDF and Choose an Option</h2>
+            <div class="container">
+                <h2>Upload PDF and Choose an Option</h2>
 
-            <form id="uploadForm">
-                <div>
-                    <label for="pdfFile">Select PDF:</label>
-                    <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" required>
-                </div>
+                <form id="uploadForm">
+                    <div>
+                        <label for="pdfFile">Select PDF:</label>
+                        <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" required>
+                    </div>
 
-                <div class="button-group" style="margin-top: 15px;">
-                    <p>Choose an action:</p>
-                    <button type="button" data-option="invitational">Invitational </button>
-                    <button type="button" data-option="regional">Regional </button>
-                    <button type="button" data-option="state">State </button>
-                </div>
-                <button type="button" id="submitBtn">Create Sheet</button>
-            </form>
+                    <div class="button-group" style="margin-top: 15px;">
+                        <p>Choose an action:</p>
+                        <button type="button" data-option="invitational">Invitational </button>
+                        <button type="button" data-option="regional">Regional </button>
+                        <button type="button" data-option="state">State </button>
+                    </div>
+                    <button type="button" id="submitBtn">Create Sheet</button>
+                </form>
 
-        <div id="message"></div>
-    </div>
-
-
-    </div>
-
-        <div class="mt-8 text-center">
-            <button onclick="getSelectedOption()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                Create CSV
-            </button>
-        </div>
-
+                <div id="message"></div>
+            </div>
+            
             <div class="action-buttons" style="margin-top: 15px; margin-bottom: 15px;">
                 <button id="selectAllBtn">Select All</button>
                 <button id="deselectAllBtn">Deselect All</button>
