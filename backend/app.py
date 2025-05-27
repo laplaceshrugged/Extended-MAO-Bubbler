@@ -186,4 +186,4 @@ def create_sheet_handler():
         return jsonify({'error': f'Error processing PDF. Check server logs. Details: {str(e_process)}'}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)
