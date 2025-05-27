@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- CSV File Upload and Table Generation (Existing Logic) ---
-    const csvFileInput = document.getElementById('csvFile'); // Assuming you might add this ID or rename if it's pdfFile for CSVs
     const tableContainer = document.getElementById('tableContainer');
     const selectAllButton = document.getElementById('selectAllBtn');
     const deselectAllButton = document.getElementById('deselectAllBtn');
@@ -42,33 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTable = null;
     let headerCheckbox = null;
     let rowCheckboxes = [];
-
-    if (csvFileInput) { // Check if the CSV file input exists
-        csvFileInput.addEventListener('change', handleCsvFileSelect);
-    }
-
-    function handleCsvFileSelect(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const csvContent = e.target.result;
-                const parsedData = parseCSV(csvContent);
-                if (parsedData.headers && parsedData.rows.length > 0) {
-                    generateTable(parsedData.headers, parsedData.rows);
-                    setupSelectionListeners();
-                } else {
-                    tableContainer.innerHTML = '<p>Could not parse CSV or CSV is empty.</p>';
-                    currentTable = null;
-                }
-            };
-            reader.onerror = () => {
-                tableContainer.innerHTML = '<p>Error reading file.</p>';
-                currentTable = null;
-            };
-            reader.readAsText(file);
-        }
-    }
 
     function parseCSV(csvString) {
         const lines = csvString.trim().split(/\r\n|\n/);
